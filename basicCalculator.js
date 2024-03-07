@@ -1,24 +1,27 @@
-//Create a set of functions for basic calculator operations (addition, subtraction, multiplication, division). Implement functions that take two numbers and an operator as input and return the result of the operation.
+const display = document.querySelector(".display");
+const buttons = document.querySelectorAll("button");
 
-function addition(num1,num2){
-    return num1 + num2;
-}
-let add = addition(10,3)
-console.log(add);
+const specialChars = ["%","*","/","-","+","="];
+let output = "";
 
-function subtraction(num1,num2){
-    return num1 - num2;
-}
-let subtract = subtraction(10,3)
-console.log(subtract);
-function multiplication(num1,num2){
-    return num1 * num2;
-}
-let multiply = multiplication(10,3)
-console.log(multiply);
-function division(num1,num2){
-    return num1 / num2;
-}
-let divide = division(10,3)
-console.log(divide);
 
+const calculate = (btnValue) => {
+    if (btnValue === "=" && btnValue !== "") {
+        //this will change the % to .100
+        output = eval(output.replace("%","/100"));
+        //else if the AC button is pressed the output should be nothing
+    }else if(btnValue === "AC"){
+        output = ""
+    }else if(btnValue === "DEL") {
+        //if the DEL button is clicked, we should convert what is there into a string and remove the last character.
+        output = output.toString().slice(0, -1);
+    } else {
+        if (output === "" && specialChars.includes(btnValue)) return;
+        output += btnValue;
+    }
+    display.value = output;
+}
+//Add an event listener to buttons, call calculate() on click
+buttons.forEach((button) => {
+    button.addEventListener("click", (e) => calculate(e.target.dataset.value));
+});
